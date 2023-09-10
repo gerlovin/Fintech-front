@@ -1,17 +1,26 @@
 import React from 'react';
-import Header from './components/Header';
-import Main from './components/Main';
-import Footer from './components/Footer';
+// import Header from './components/Header';
+// import Main from './components/Main';
+// import Footer from './components/Footer';
+//import Analytics from './components/Analytics';
 
 
-import './styles/App.css';
+import './App.css';
+import Form from './components/Form';
+//import Contacts from './components/Contacts';
+//import Test from './components/Test';
+
 
 const App = () => {
   return (
     <div>
-      <Header />
-      <Main />
-      <Footer />
+      <Form />
+      {/* <Test /> */}
+      {/* <Analytics /> */}
+      {/* <Contacts /> */}
+      {/* <Header />
+     <Main />
+      <Footer /> */}
     </div>
     
    
