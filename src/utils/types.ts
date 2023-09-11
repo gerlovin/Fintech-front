@@ -10,7 +10,7 @@ export interface StockInfo {
         std?: number
     }
 
-export interface requestBody  {
+export interface RequestBody  {
         indexs?: string,
         type: string,
         quantity: number,

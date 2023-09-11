@@ -1,24 +1,29 @@
 import { putMessage } from "../reducers/messageReducer"
 import { putStockInfo } from "../reducers/stockReducer";
 import { AppDispatch } from "../store/configureStore";
-import { requestBody } from "../utils/types";
+import { RequestBody } from "../utils/types";
 
 
 
 
-export const fetchGetData = (indexs: string, type: string, quantity: number, dateFrom: string, dateTo: string) => {
+export const fetchGetData = (indexs: string, quantity: number, type: string, dateFrom: string, dateTo: string) => {
     return async (dispatch: AppDispatch) => {
         dispatch(putMessage('Pending...'));
         try {
-            const requestBody = {
+            const requestBody: RequestBody = {
                 "indexs": indexs,
                 "type": type,
                 "quantity": quantity,
                 "from": dateFrom,
                 "to": dateTo
             }
+           
             const response = await fetch('/finstats.herokuapp.com/communication/index', {
                 method: 'POST',
+                headers: {
+                    'Authorization': 'Basic YWRtaW46YWRtaW4=',
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(requestBody)
             });
             const data = await response.json();
