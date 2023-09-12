@@ -7,7 +7,7 @@ import React from 'react';
 
 import './App.css';
 import Form from './components/Form';
-import Statistics from './components/Statistics';
+//import Statistics from './components/Statistics';
 //import Contacts from './components/Contacts';
 //import Test from './components/Test';
 
@@ -16,7 +16,7 @@ const App = () => {
   return (
     <div>
       <Form />
-      <Statistics />
+      {/* <Statistics /> */}
       {/* <Test /> */}
       {/* <Analytics /> */}
       {/* <Contacts /> */}

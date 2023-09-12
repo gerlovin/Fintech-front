@@ -1,12 +1,11 @@
 import { putMessage } from "../reducers/messageReducer"
 import { putStockInfo } from "../reducers/stockReducer";
 import { AppDispatch } from "../store/configureStore";
+import { password, username } from "../utils/constants";
+//import { createToken } from "../utils/constants";
 import { RequestBody } from "../utils/types";
 
-
-
-
-export const fetchGetData = (indexs: string, quantity: number, type: string, dateFrom: string, dateTo: string) => {
+export const fetchGetData = (indexs: string, quantity: number, type: string, from: string, to: string) => {
     return async (dispatch: AppDispatch) => {
         dispatch(putMessage('Pending...'));
         try {
@@ -14,21 +13,25 @@ export const fetchGetData = (indexs: string, quantity: number, type: string, dat
                 "indexs": indexs,
                 "type": type,
                 "quantity": quantity,
-                "from": dateFrom,
-                "to": dateTo
+                "from": from,
+                "to": to
             }
            
             const response = await fetch('/finstats.herokuapp.com/communication/index', {
                 method: 'POST',
+                body: JSON.stringify(requestBody),
                 headers: {
-                    'Authorization': 'Basic YWRtaW46YWRtaW4=',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestBody)
+                    'Content-Type': 'application/json',
+                     Authorization: `Basic ${window.btoa(username + ':' + password)}`
+  //                  Authorization: createToken!
+                }
+                
             });
             const data = await response.json();
             dispatch(putMessage(''))
             dispatch(putStockInfo(data));
+                        
+            
         } catch (e) {
             console.log(e);
             dispatch(putMessage('Fill in again'));
@@ -36,30 +39,3 @@ export const fetchGetData = (indexs: string, quantity: number, type: string, dat
     }
 }
 
-// const getData = async () => {
-//         const requestBody = {
-// "indexs": indexs,
-//     "type": type,
-//         "quantity": quantity,
-//             "from": dateFrom,
-//                 "to": dateTo
-//         }
-//         try {
-//             const responce = await fetch('/finstats.herokuapp.com/communication/index', {
-//                 method: 'POST',
-//                 body: JSON.stringify(requestBody)
-//             });
-
-//             const data = await responce.json();
-//             setDateFrom(data.from);
-//             setDateTo(data.to);
-//             setSource(data.source);
-//             setType(data.fullType);
-//             setMax(data.max);
-//             setMean(data.mean);
-//             setMedian(data.median);
-//             setMin(data.min);
-//             setStd(data.std);
-//         } catch (e) {
-//             console.log('Error');
-//         }

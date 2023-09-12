@@ -1,6 +1,6 @@
 export interface StockInfo {
-        from?: string | number,
-        to?: string | number,
+        from?: string,
+        to?: string,
         source?: string,
         type?: string,
         max?: number,

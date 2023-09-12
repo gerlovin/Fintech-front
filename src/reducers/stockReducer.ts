@@ -2,7 +2,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { StockInfo } from "../utils/types";
 
 
-const defaultStock: StockInfo = {}
+const defaultStock: StockInfo = {
+    "from": '',
+    "to": '',
+    "source": '',
+    "type": '',
+    "max": 0,
+    "mean": 0,
+    "median": 0,
+    "min": 0,
+    "std": 0
+}
 
 const stockSlice = createSlice({
     name: 'stock',
