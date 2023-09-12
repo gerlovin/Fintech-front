@@ -2,6 +2,11 @@
  margin: 50px 50px
 }
 
+.infoStock {
+    margin-left: 100px;
+    font-size: large;
+    color: red
+}
 
 /* .App {
   text-align: center;

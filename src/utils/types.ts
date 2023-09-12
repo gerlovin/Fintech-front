@@ -11,7 +11,7 @@ export interface StockInfo {
     }
 
 export interface RequestBody  {
-        indexs?: string,
+        indexs?: string[],
         type: string,
         quantity: number,
         from: string,

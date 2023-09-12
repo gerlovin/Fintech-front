@@ -5,6 +5,10 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useAppDispatch } from '../utils/hooks';
 import { fetchGetData } from '../actionFunctions/fetchGetData';
+import { AppDispatch } from '../store/configureStore';
+import { putMessage } from '../reducers/messageReducer';
+import { password, username } from '../utils/constants';
+//import {fetchAllIndexes} from '../actionFunctions/fetchAllIndexes';
 
 
 const Form = () => {
@@ -28,6 +32,38 @@ const Form = () => {
         // console.log('dateFrom: ', dateFrom.format('YYYY-MM-DD'));
         // console.log('dateTo: ', dateTo.format('YYYY-MM-DD'));
     }
+
+    const handleClickAll = () => {
+        console.log('handleClickAll');
+        
+        
+            return async (dispatch: AppDispatch) => {
+                dispatch(putMessage('Pending...'));
+                
+                try {
+                   const response = await fetch('https://finstats.herokuapp.com/communication/index', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Basic ${window.btoa(username + ':' + password)}`
+                            //                  Authorization: createToken!
+                        }
+        
+                    });
+                    const data = await response.json();
+                    dispatch(putMessage(''))
+          //          dispatch(putStockInfo(data));
+          console.log(data);
+          
+        
+        
+                } catch (e) {
+                    console.log(e);
+                    dispatch(putMessage('Fill in again'));
+                }
+            }
+        }
+   
     return (
         <div className='form'>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -66,6 +102,7 @@ const Form = () => {
                     onChange={(newValue) => setDateTo(newValue!)}
                 />
                 <Button variant="contained" onClick={handleClick}>Get</Button>
+                <Button variant="contained" onClick={handleClickAll}>Get all indexes</Button>
             </LocalizationProvider>
         </div>
     )

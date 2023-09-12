@@ -21,15 +21,15 @@ const Statistics = () => {
     <div className='infoStock'>
       {!message &&
         <div>
-          <p>From: +{info.from}</p>
-          <p>To: +{info.to}</p>
-          <p>Source: +{info.source}</p>
-          <p>Type: +{info.type}</p>
-          <p>Max: +{info.max}</p>
-          <p>Mean: +{info.mean}</p>
-          <p>Median: +{info.median}</p>
-          <p>Min: +{info.min}</p>
-          <p>Std: +{info.std}</p>
+          <p>From: {info.from}</p>
+          <p>To: {info.to}</p>
+          <p>Source: {info.source}</p>
+          <p>Type: {info.type}</p>
+          <p>Max: {info.max}</p>
+          <p>Mean: {info.mean}</p>
+          <p>Median: {info.median}</p>
+          <p>Min: {info.min}</p>
+          <p>Std: {info.std}</p>
         </div>}
         <p>{message}</p>
     </div>
