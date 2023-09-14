@@ -1,11 +1,8 @@
-import { putMessage } from "../reducers/messageReducer"
-import { putStockInfo } from "../reducers/stockReducer";
+import { putMessage } from "../reducers/messageReducer";
 import { AppDispatch } from "../store/configureStore";
-import { password, username } from "../utils/constants";
-//import { createToken } from "../utils/constants";
 import { RequestBody } from "../utils/types";
 
-export const fetchGetData = (indexs: string, quantity: number, type: string, from: string, to: string) => {
+export const fetchBetweenOne = (indexs: string, quantity: number, type: string, from: string, to: string) => {
     return async (dispatch: AppDispatch) => {
         dispatch(putMessage('Pending...'));
         const indexArray = [indexs];
@@ -17,8 +14,7 @@ export const fetchGetData = (indexs: string, quantity: number, type: string, fro
                 "from": from,
                 "to": to
             }
-
-            const response = await fetch('https://finstats.herokuapp.com/communication/index', {
+            const response = await fetch('https://finstats.herokuapp.com/communication/index/apy_all', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -26,19 +22,14 @@ export const fetchGetData = (indexs: string, quantity: number, type: string, fro
                     //                  Authorization: createToken!
                 },
                 body: JSON.stringify(requestBody),
-
             });
             const data = await response.json();
-            dispatch(putMessage(''))
+            dispatch(putMessage(''));
             dispatch(putStockInfo(data));
             console.log(data);
-            
-
-
         } catch (e) {
             console.log(e);
             dispatch(putMessage('Fill in again'));
         }
     }
 }
-

@@ -16,7 +16,13 @@ const Statistics = () => {
   // const [std, setStd] = useState('');
 
   const message = useAppSelector<ReturnType<typeof messageReducer>>(state => state.message);
-  const info = useAppSelector<ReturnType<typeof stockReducer>>(state => state.stockInfo)
+  const info = useAppSelector<ReturnType<typeof stockReducer>>(state => {
+    console.log(state);
+    
+    return state.stockInfo
+  
+  });
+  
   return (
     <div className='infoStock'>
       {!message &&

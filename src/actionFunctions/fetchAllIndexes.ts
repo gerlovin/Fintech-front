@@ -1,20 +1,18 @@
-import { log } from "console";
 import { putMessage } from "../reducers/messageReducer"
 import { putStockInfo } from "../reducers/stockReducer";
 import { AppDispatch } from "../store/configureStore";
 import { password, username } from "../utils/constants";
-//import { createToken } from "../utils/constants";
-import { RequestBody } from "../utils/types";
+
 
 export const fetchAllIndexes = () => {
     return async (dispatch: AppDispatch) => {
         dispatch(putMessage('Pending...'));
-        
+
         try {
-           const response = await fetch('https://finstats.herokuapp.com/communication/index', {
+            const response = await fetch('https://finstats.herokuapp.com/index', {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
+ //                   'Content-Type': 'application/json',
                     Authorization: `Basic ${window.btoa(username + ':' + password)}`
                     //                  Authorization: createToken!
                 }
@@ -22,14 +20,11 @@ export const fetchAllIndexes = () => {
             });
             const data = await response.json();
             dispatch(putMessage(''))
-  //          dispatch(putStockInfo(data));
-  console.log(data);
-  
-
-
+            dispatch(putStockInfo(data));
+            console.log(data);
         } catch (e) {
             console.log(e);
-            dispatch(putMessage('Fill in again'));
+            dispatch(putMessage('Error'));
         }
     }
 }
