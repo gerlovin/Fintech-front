@@ -1,3 +1,5 @@
+import dayjs from "dayjs"
+
 export interface StockInfo {
     from?: string,
     to?: string,
@@ -13,11 +15,13 @@ export interface StockInfo {
 
 
 export interface RequestBody {
-    indexs?: string[],
+    indices: string[],
     type: string,
     quantity: number,
     from: string,
     to: string
+    // from: dayjs.Dayjs,
+    // to: dayjs.Dayjs
 }
 
 export interface IncomeApyAllDate {

@@ -17,9 +17,7 @@ const Statistics = () => {
 
   const message = useAppSelector<ReturnType<typeof messageReducer>>(state => state.message);
   const info = useAppSelector<ReturnType<typeof stockReducer>>(state => {
-    console.log(state);
-    
-    return state.stockInfo
+   return state.stockInfo
   
   });
   

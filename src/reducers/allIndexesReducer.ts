@@ -8,7 +8,7 @@ const allIndxesSlice = createSlice({
     initialState: defaltAllIndexes,
     reducers: {
         putAllIndexes(allIndexesInfo, action: PayloadAction<string[]>){
-            allIndexesInfo = action.payload;
+           return action.payload;
         }
     }
 })

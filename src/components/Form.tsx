@@ -1,109 +1,146 @@
 import { useState } from 'react';
 import dayjs from 'dayjs';
-import { Button, TextField } from '@mui/material';
+import { Autocomplete, Button, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useAppDispatch } from '../utils/hooks';
+import { useAppDispatch, useAppSelector } from '../utils/hooks';
 import { fetchBetweenOne } from '../actionFunctions/fetchBetweenOne';
-import { fetchAllIndexes } from '../actionFunctions/fetchAllIndexes'
+import { fetchAllIndices } from '../actionFunctions/fetchAllIndices'
+import allIndexesReducer from '../reducers/allIndexesReducer';
 import Analytics from './Analytics';
+import { RequestBody } from '../utils/types';
 
 
 const Form = () => {
-    const [requestBody, setRequestBody] = useState({
-        indexs: ['SNP500'],
+    const [state, setState] = useState({
+        indices: ['GOLD'],
         type: 'days',
         quantity: 5,
-        from: dayjs('2019-04-13'),
+        from: dayjs('2015-04-13'),
         to: dayjs('2019-04-13')
     });
-    // const [indexs, setIndexs] = useState('SNP500');
-    // const [quantity, setQuantity] = useState(5);
-    // const [type, setType] = useState('days');
-    // const [dateFrom, setDateFrom] = useState(dayjs('2018-04-13'));
-    // const [dateTo, setDateTo] = useState(dayjs('2019-04-13'));
+    const [showAnalitics, setShowAnalitics] = useState(false);
+
     const dispatch = useAppDispatch();
 
+    const allIndexes = useAppSelector<ReturnType<typeof allIndexesReducer>>(state => state.allIndexesInfo);
+
+    const parseData = (): RequestBody => {
+        return {
+            ...state,
+            from: state.from.format('YYYY-MM-DD'),
+            to: state.to.format('YYYY-MM-DD')
+        };
+
+    }
     const handleClickBetweenOne = () => {
-        dispatch(fetchBetweenOne(requestBody.indexs, requestBody.quantity, requestBody.type, requestBody.dateFrom.format('YYYY-MM-DD'), requestBody.dateTo.format('YYYY-MM-DD')));
-        setRequestBody({
-            indexs: [''],
-        type: '',
-        quantity: 0,
-        from: dayjs('2019-04-13'),
-        to: dayjs('2019-04-13')
-        })
-        // setIndexs('');
-        // setQuantity(0);
-        // setType('');
-        // setDateFrom(dayjs());
-        // setDateTo(dayjs());
+        dispatch(fetchBetweenOne(parseData()));
+        // setRequestBody({
+        //     indices: [''],
+        //     type: '',
+        //     quantity: 0,
+        //     from: dayjs('2015-04-13'),
+        // to: dayjs('2019-04-13')
+        //   })
+
+
     }
 
-    const handleClickAllIndexes = () => {
-        dispatch(fetchAllIndexes());
+    const handleClickAllIndices = () => {
+        dispatch(fetchAllIndices());
+
+
     }
 
     const handleClickIncomeApyAllDate = () => {
-        dispatch(fetchIncomeApyAllDate(indexs, quantity, type, dateFrom.format('YYYY-MM-DD'), dateTo.format('YYYY-MM-DD')));
-        
-        setRequestBody({
-            indexs: [''],
-        type: '',
-        quantity: 0,
-        from: dayjs('2019-04-13'),
-        to: dayjs('2019-04-13')
-        })// setIndexs('');
-        // setQuantity(0);
-        // setType('');
-        // setDateFrom(dayjs());
-        // setDateTo(dayjs());
+        setShowAnalitics(true);
+
+        //      dispatch(fetchIncomeApyAllDate(indices, quantity, type, from.format('YYYY-MM-DD'), to.format('YYYY-MM-DD')));
+
+        // setRequestBody({
+        //     indices: [''],
+        //     type: '',
+        //     quantity: 0,
+        //     from: dayjs('2019-04-13'),
+        //     to: dayjs('2019-04-13')
+        // })
+
     }
 
     return (
         <div className='form'>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={allIndexes}
+                    sx={{ width: 300 }}
+                    renderInput={(allIndexes) => <TextField {...allIndexes} label="Indices" />}
+                />
+
                 <TextField
-                    id="indexs"
-                    label="Indexs"
-                    value={requestBody.indexs}
+                    id="indices"
+                    label="Indices"
+                    value={state.indices}
                     onChange={(e) => {
-                        setIndexs(e.target.value);
+                        setState(prevState => ({
+                            ...prevState,
+                            indices: [e.target.value]
+                        }));
                     }}
                 />
                 <TextField
                     id="quantity"
                     label="Quantity"
-                    value={requestBody.quantity}
+                    value={state.quantity}
                     onChange={(e) => {
-                        setQuantity(+e.target.value);
+                        setState(prevState => ({
+                            ...prevState,
+                            quantity: +e.target.value
+                        }));
                     }}
                 />
                 <TextField
                     id="type"
                     label="Type"
-                    value={requestBody.type}
+                    value={state.type}
                     onChange={(e) => {
-                        setRequestBody(requestBody => ({ requestBody.type = e.target.value }));
+                        setState(prevState => ({
+                            ...prevState,
+                            type: e.target.value
+                        }));
                     }}
                 />
                 <DatePicker
                     label="DateFrom"
-                    value={requestBody.dateFrom}
-                    onChange={(newValue) => setDateFrom(newValue!)}
+                    value={state.from}
+                    onChange={(newValue) => {
+                        setState(prevState => ({
+                            ...prevState,
+                            from: newValue!
+                        }));
+                    }}
                 />
                 <DatePicker
                     label="DateTo"
-                    value={requestBody.dateTo}
-                    onChange={(newValue) => setDateTo(newValue!)}
+                    value={state.to}
+                    onChange={(newValue) => {
+                        setState(prevState => ({
+                            ...prevState,
+                            to: newValue!
+                        }));
+                    }}
+
                 />
                 <Button variant="contained" onClick={handleClickBetweenOne}>Period between For One Company</Button>
-                <Button variant="contained" onClick={handleClickAllIndexes}>Get all indexes</Button>
-                <Button variant="contained" onClick={handleClickIncomeApyAllDate}>Calc Income with Apy All Date</Button>
-                <div>
-                    <Analytics />
-                </div>
+                <Button variant="contained" onClick={handleClickAllIndices}>Get all indices</Button>
+                
+
             </LocalizationProvider>
+            <Button variant="contained" onClick={handleClickIncomeApyAllDate}>Calc Income with Apy All Date</Button>
+            <div>
+                {showAnalitics && <Analytics requestBody={parseData()} />}
+            </div>
         </div>
     )
 }
