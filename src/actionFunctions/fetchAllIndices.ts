@@ -7,19 +7,18 @@ import { password, username } from "../utils/constants";
 export const fetchAllIndices = () => {
     return async (dispatch: AppDispatch) => {
         dispatch(putMessage('Pending...'));
-
         try {
-            const response = await fetch('http://localhost:8080/communication/index', {
+            const response = await fetch('http://localhost:8080/communication/indexBD', {
                 method: 'GET',
                 headers: {
  //                   'Content-Type': 'application/json',
-                    Authorization: `Basic ${window.btoa(username + ':' + password)}`
+ //                   Authorization: `Basic ${window.btoa(username + ':' + password)}`
                     //                  Authorization: createToken!
                 }
 
             });
             const data = await response.json();
-            dispatch(putMessage(''))
+            dispatch(putMessage(''));
             dispatch(putAllIndexes(data));
             
         } catch (e) {

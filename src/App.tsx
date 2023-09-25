@@ -8,6 +8,7 @@ import React from 'react';
 import './App.css';
 import Form from './components/Form';
 import Statistics from './components/Statistics';
+import Correlation from './components/Correlation';
 //import Contacts from './components/Contacts';
 //import Test from './components/Test';
 
@@ -17,6 +18,7 @@ const App = () => {
     <div>
       <Form />
       <Statistics />
+      <Correlation />
       {/* <Test /> */}
       {/* <Analytics /> */}
       {/* <Contacts /> */}
@@ -24,8 +26,8 @@ const App = () => {
      <Main />
       <Footer /> */}
     </div>
-    
-   
+
+
   );
 }
 

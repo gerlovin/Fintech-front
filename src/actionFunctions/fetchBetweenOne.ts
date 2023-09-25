@@ -13,15 +13,17 @@ export const fetchBetweenOne = (requestBody: RequestBody) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Basic ${window.btoa(username + ':' + password)}`
+                    //           Authorization: `Basic ${window.btoa(username + ':' + password)}`
                     //                  Authorization: createToken!
                 },
                 body: JSON.stringify(requestBody),
             });
+            if (!response.ok) {
+                throw new Error(`An error has occured: ${response.status}`);
+            }
             const data = await response.json();
             dispatch(putMessage(''));
             dispatch(putStockInfo(data));
-            console.log(data);
         } catch (e) {
             console.log(e);
             dispatch(putMessage('Fill in again'));

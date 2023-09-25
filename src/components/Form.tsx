@@ -71,7 +71,8 @@ const Form = () => {
         <div className='form'>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Autocomplete
-                    disablePortal
+                    
+                    
                     id="combo-box-demo"
                     options={allIndexes}
                     sx={{ width: 300 }}
@@ -130,7 +131,6 @@ const Form = () => {
                             to: newValue!
                         }));
                     }}
-
                 />
                 <Button variant="contained" onClick={handleClickBetweenOne}>Period between For One Company</Button>
                 <Button variant="contained" onClick={handleClickAllIndices}>Get all indices</Button>
