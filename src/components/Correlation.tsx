@@ -11,67 +11,71 @@ import { fetchAllIndices } from '../actionFunctions/fetchAllIndices';
 
 const Correlation = () => {
     const [requestBody, setRequestBody] = useState({
-        indices: ["GOLD", "AGRI"],
+        indices: [''],
+    //    indices: ["GOLD", "AGRI"],
         from: dayjs("2023-05-05"),
         to: dayjs("2023-05-22")
     });
-    const [response, setResponse] = useState(0);
-    const dispatch = useAppDispatch();
+    const [response, setResponse] = useState('');
+    const[selectIndices, setSelectIndices] =useState(['']);
+    const[indexInputValue, setIndexInputValue] =  useState('');
 
+    const dispatch = useAppDispatch();
     const allIndexes = useAppSelector<ReturnType<typeof allIndexesReducer>>(state => state.allIndexesInfo);
     const message = useAppSelector<ReturnType<typeof messageReducer>>(state => state.message);
     const parseData = () => {
         return {
             ...requestBody,
+            indices: selectIndices,
             from: requestBody.from.format('YYYY-MM-DD'),
             to: requestBody.to.format('YYYY-MM-DD')
         };
-
     }
-    const handleClickCorrelation = () => {
-        return async (dispatch: AppDispatch) => {
-            dispatch(putMessage('Pending...'));
-            try {
-                dispatch(fetchAllIndices());
-                const response = await fetch('http://localhost:8080/communication/index/correlation', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(parseData()),
-                });
-                if (!response.ok) {
-                    throw new Error(`An error has occured: ${response.status}`);
-                }
-                const data = await response.json();
-                dispatch(putMessage(''));
-                setResponse(data);
-            }
-            catch (e) {
-                console.log(e);
-                dispatch(putMessage('Error'));
-            }
-        }
-    }
-
+    
     // const handleClickCorrelation = () => {
-    //     dispatch(fetchAllIndices());
-    //     const apiUrl = 'http://localhost:8080/communication/index/correlation';
-    //     fetch(apiUrl, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(parseData()),
-    //     })
-    //         .then((response) => {
+    //     return async (dispatch: AppDispatch) => {
+    //         dispatch(putMessage('Pending...'));
+    //         try {
+    //             dispatch(fetchAllIndices());
+    //             const response = await fetch('http://localhost:8080/communication/index/correlation', {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                 },
+    //                 body: JSON.stringify(parseData()),
+    //             });
     //             if (!response.ok) {
-    //                 throw new Error('Response was not ok');
+    //                 throw new Error(`An error has occured: ${response.status}`);
     //             }
-    //             return response.json();
-    //         })
-    //         .then(data => setResponse(data))
+    //             const data = await response.json();
+    //             dispatch(putMessage(''));
+    //             setResponse(data);
+    //         }
+    //         catch (e) {
+    //             console.log(e);
+    //             dispatch(putMessage('Error'));
+    //         }
+    //     }
     // }
+
+    const handleClickCorrelation = () => {
+        dispatch(fetchAllIndices());
+        const apiUrl = 'http://localhost:8080/communication/index/correlation';
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(parseData()),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => setResponse(data))
+    }
 
     return (
         <div>
@@ -80,6 +84,13 @@ const Correlation = () => {
                     multiple
                     id="tags-standard"
                     options={allIndexes}
+                    onChange={(event, newValue) => {
+                        setSelectIndices(newValue);
+                    }}
+                    inputValue={indexInputValue}
+                    onInputChange={(event, newIndexInputValue) => {
+                        setResponse(newIndexInputValue);
+                    }}
                     sx={{ width: 300 }}
                     //                defaultValue={[allIndexes[6]]}
                     renderInput={(allIndexes) => (
@@ -90,8 +101,26 @@ const Correlation = () => {
                             placeholder="Indices"
                         />
                     )}
-                />
+                ></Autocomplete>
                 <LocalizationProvider dateAdapter={AdapterDayjs} >
+                {/* <Autocomplete
+                    id="combo-box-demo"
+                    options={allIndexes}
+                    sx={{ width: 300 }}
+                    renderInput={(allIndexes) => <TextField {...allIndexes} label="Indices" />}
+                    onChange={(e, newValue) => {
+                        setRequestBody(setRequestBody => ({
+                            ...setRequestBody,
+                            indices: newValue
+                        }));
+                    }}
+                />
+                <Autocomplete
+                    id="combo-box-demo"
+                    options={allIndexes}
+                    sx={{ width: 300 }}
+                    renderInput={(allIndexes) => <TextField {...allIndexes} label="Indices" />}
+                /> */}
                     <DatePicker
                         label="DateFrom"
                         value={requestBody.from}

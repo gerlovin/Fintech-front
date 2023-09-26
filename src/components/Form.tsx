@@ -31,7 +31,6 @@ const Form = () => {
             from: state.from.format('YYYY-MM-DD'),
             to: state.to.format('YYYY-MM-DD')
         };
-
     }
     const handleClickBetweenOne = () => {
         dispatch(fetchBetweenOne(parseData()));
@@ -71,8 +70,6 @@ const Form = () => {
         <div className='form'>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Autocomplete
-                    
-                    
                     id="combo-box-demo"
                     options={allIndexes}
                     sx={{ width: 300 }}
@@ -134,7 +131,7 @@ const Form = () => {
                 />
                 <Button variant="contained" onClick={handleClickBetweenOne}>Period between For One Company</Button>
                 <Button variant="contained" onClick={handleClickAllIndices}>Get all indices</Button>
-                
+
 
             </LocalizationProvider>
             <Button variant="contained" onClick={handleClickIncomeApyAllDate}>Calc Income with Apy All Date</Button>
